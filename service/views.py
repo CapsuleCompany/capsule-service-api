@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from service.serializer import UserSerializer, CustomerSerializer, LocationSerializer, ServiceSerializer, ServiceDetailSerializer, OrderSerializer, ScheduleSerializer
-from service.models import User, Customer, Location, Service, ServiceDetail, Order, Schedule
+from service.serializer import UserSerializer, CompanySerializer, LocationSerializer, ServiceSerializer, ServiceDetailSerializer, OrderSerializer, ScheduleSerializer
+from service.models import User, Company, Location, Service, ServiceDetail, Order, Schedule
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -9,9 +9,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class CustomerViewSet(viewsets.ModelViewSet):
-    queryset = Customer.objects.all()
-    serializer_class = CustomerSerializer
+class CompanyViewSet(viewsets.ModelViewSet):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
 
 
 class LocationViewSet(viewsets.ModelViewSet):

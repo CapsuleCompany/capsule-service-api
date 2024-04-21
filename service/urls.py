@@ -4,7 +4,7 @@ from . import views
 
 router = DefaultRouter()
 router.register(r'users', views.UserViewSet)
-router.register(r'customers', views.CustomerViewSet)
+router.register(r'company', views.CompanyViewSet)
 router.register(r'locations', views.LocationViewSet)
 router.register(r'services', views.ServiceViewSet)
 router.register(r'service-details', views.ServiceDetailViewSet)
