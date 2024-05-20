@@ -64,7 +64,7 @@ class Service(BaseModel):
     description = models.TextField()
     price = models.FloatField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    location = models.OneToOneField(Location, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     image = models.URLField(default='https://via.placeholder.com/150', blank=True, null=True)
 

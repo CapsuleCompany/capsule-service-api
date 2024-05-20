@@ -1,14 +1,18 @@
-from django.urls import path
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'company', views.CompanyViewSet)
-router.register(r'locations', views.LocationViewSet)
-router.register(r'services', views.ServiceViewSet)
-router.register(r'service-details', views.ServiceDetailViewSet)
-router.register(r'orders', views.OrderViewSet)
-router.register(r'schedules', views.ScheduleViewSet)
+# router.register(r'services', views.ServiceViewSet)
+router.register(r'providers', views.ProviderList)
 
-urlpatterns = router.urls
+
+# Custom URL patterns
+urlpatterns = [
+    path('', include(router.urls)),  # Include default router URLs
+    path('providers/<uuid:pk>/', views.ProviderList.as_view({'get': 'retrieve'}), name='provider-list'),
+    path('providers/<uuid:pk>/services/', views.ProviderList.as_view({'get': 'get_services'}), name='provider-list'),
+    path('providers/<uuid:pk>/services/<uuid:service_id>/', views.ProviderList.as_view({'get': 'get_service_details'}), name='provider-list'),
+    # path('services/<int:pk>/', views.ServiceViewSet.as_view({'get': 'retrieve'}), name='service-detail'),
+    # path('services/<int:pk>/details', views.ServiceViewSet.as_view({'get': 'details'}), name='service-details'),
+]
