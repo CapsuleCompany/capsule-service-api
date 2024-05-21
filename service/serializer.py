@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from service.models import User, Company, Location, Service, ServiceDetail, Order, Schedule, Detail
+from service.models import User, Company, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -8,35 +8,32 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CompanySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Company
-        exclude = ['created_at', 'updated_at']
-
-
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
         exclude = ['created_at', 'updated_at']
 
 
-class ServiceSerializer(serializers.ModelSerializer):
-    location = LocationSerializer()
-
+class DetailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Service
+        model = Detail
         exclude = ['created_at', 'updated_at']
 
 
 class ServiceDetailSerializer(serializers.ModelSerializer):
+    user_inputs = DetailSerializer(many=True, read_only=True)
+
     class Meta:
         model = ServiceDetail
-        exclude = ['created_at', 'updated_at']
+        fields = ['id', 'name', 'description', 'price', 'image', 'provider', 'user_inputs']
 
 
-class DetailSerializer(serializers.ModelSerializer):
+class ServiceSerializer(serializers.ModelSerializer):
+    options = ServiceDetailSerializer(many=True, read_only=True)
+
     class Meta:
-        model = Detail
+        model = Service
+        fields = ['id', 'name', 'description', 'price', 'image', 'category', 'options']
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -49,3 +46,17 @@ class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
         exclude = ['created_at', 'updated_at']
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ["id", "name"]
+        depth = 1
+
+
+class ProviderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        exclude = ['created_at', 'updated_at']
+        depth = 2

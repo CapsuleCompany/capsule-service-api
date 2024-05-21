@@ -2,14 +2,56 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.views.generic.detail import DetailView
 from django.shortcuts import get_object_or_404
-from service.serializer import UserSerializer, CompanySerializer, LocationSerializer, ServiceSerializer, ServiceDetailSerializer, OrderSerializer, ScheduleSerializer, DetailSerializer
-from service.models import User, Company, Location, Service, ServiceDetail, Order, Schedule, Detail
+from service.serializer import UserSerializer, ProviderSerializer, LocationSerializer, ServiceSerializer, ServiceDetailSerializer, OrderSerializer, ScheduleSerializer, DetailSerializer, CategorySerializer
+from service.models import User, Company, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
 from rest_framework.decorators import action
 
 
-class ProviderList(viewsets.GenericViewSet):
+
+class ProviderViewset(viewsets.GenericViewSet):
     queryset = Company.objects.all()
-    serializer_class = CompanySerializer
+    serializer_class = ProviderSerializer
+
+    def list(self, request):
+        serializer = self.serializer_class(self.queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        company = get_object_or_404(self.queryset, pk=pk)
+        serializer = self.serializer_class(company)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def get_services(self, request, pk=None):
+        company = get_object_or_404(self.queryset, pk=pk)
+        services = company.offered_services.all()
+        serializer = ServiceSerializer(services, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def get_service_details(self, request, pk=None, service_id=None):
+        company = get_object_or_404(self.queryset, pk=pk)
+        service = get_object_or_404(company.offered_services.all(), pk=service_id)
+        service_details = service.options.all()
+        serializer = ServiceDetailSerializer(service_details, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def get_details(self, request, pk=None, service_id=None, details_id=None):
+        details = ServiceDetail.objects.get(pk=details_id)
+        serializer = ServiceDetailSerializer(details, many=False)
+        return Response(serializer.data)
+
+
+
+
+
+class ServiceViewSet(viewsets.GenericViewSet):
+    """
+    A simple ViewSet for listing or retrieving services.
+    """
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
 
     def list(self, request):
         queryset = self.queryset
@@ -23,51 +65,56 @@ class ProviderList(viewsets.GenericViewSet):
         return Response(serializer.data)
 
     @action(detail=True, methods=['get'])
-    def get_services(self, request, pk=None):
-        queryset = self.queryset.get(pk=pk).service_set.all()
-        serializer = ServiceSerializer(queryset, many=True)
+    def get_service_details(self, request, pk=None):
+        queryset = self.queryset
+        service = get_object_or_404(queryset, pk=pk)
+        all_provider_services = service.options.all()
+        serializer = ServiceDetailSerializer(all_provider_services, many=True)
         return Response(serializer.data)
 
     @action(detail=True, methods=['get'])
-    def get_service_details(self, request, pk=None, service_id=None):
-        queryset = ServiceDetail.objects.filter(provider=service_id)
-        serializer = ServiceDetailSerializer(queryset, many=True)
+    def get_service_details_list(self, request, pk=None, detail_id=None):
+        queryset = self.queryset
+        service = get_object_or_404(queryset, pk=pk)
+        service_detail = service.options.all()
+        service_detail = get_object_or_404(service_detail, pk=detail_id)
+        serializer = ServiceDetailSerializer(service_detail, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def get_provider(self, request, pk=None):
+        queryset = self.queryset
+        provider = get_object_or_404(queryset, pk=pk)
+        serializer = ProviderSerializer(provider.company)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def get_provider_services(self, request, pk=None):
+        queryset = self.queryset
+        provider = get_object_or_404(queryset, pk=pk)
+        all_provider_services = provider.company.offered_services.all()
+        serializer = ServiceSerializer(all_provider_services, many=True)
         return Response(serializer.data)
 
 
+class CategoryViewSet(viewsets.GenericViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
-# class ServiceViewSet(viewsets.ModelViewSet):
-#     """
-#     A simple ViewSet for listing or retrieving services.
-#     """
-#     queryset = Service.objects.all()
-#     serializer_class = ServiceSerializer
-#
-#     def list(self, request):
-#         queryset = self.queryset
-#         serializer = self.serializer_class(queryset, many=True)
-#         return Response(serializer.data)
-#
-#     def retrieve(self, request, pk=None):
-#         queryset = self.queryset
-#         service = get_object_or_404(queryset, pk=pk)
-#         serializer = self.serializer_class(service)
-#         return Response(serializer.data)
-#
-#     @action(detail=True, methods=['get'])
-#     def details(self, request, pk=None):
-#         service = Detail.objects.all()
-#         serializer = DetailSerializer(service, many=True)
-#         return Response(serializer.data)
-#
+    def list(self, request):
+        queryset = self.queryset
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
+    def retrieve(self, request, pk=None):
+        queryset = self.queryset
+        service = get_object_or_404(queryset, pk=pk)
+        serializer = self.serializer_class(service)
+        return Response(serializer.data)
 
-
-
-
-
-
-
+    @action(detail=True, methods=['get'])
+    def get_services_by_category(self, request, pk=None):
+        pass
 
 
 

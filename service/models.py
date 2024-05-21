@@ -65,7 +65,7 @@ class Service(BaseModel):
     price = models.FloatField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='offered_services')
     image = models.URLField(default='https://via.placeholder.com/150', blank=True, null=True)
 
     def __str__(self):
@@ -76,7 +76,8 @@ class ServiceDetail(BaseModel):
     name = models.CharField(max_length=100)
     description = models.TextField()
     price = models.FloatField()
-    provider = models.ForeignKey(Service, on_delete=models.CASCADE)
+    provider = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='options')
+    image = models.URLField(default='https://via.placeholder.com/150', blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -87,7 +88,7 @@ class Detail(BaseModel):
     description = models.TextField()
     meta = models.TextField()
     price = models.FloatField()
-    service = models.ForeignKey(ServiceDetail, on_delete=models.CASCADE)
+    service = models.ForeignKey(ServiceDetail, on_delete=models.CASCADE, related_name='user_inputs')
 
     def __str__(self):
         return self.title
