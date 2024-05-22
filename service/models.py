@@ -1,7 +1,5 @@
 import uuid
 from django.db import models
-# from django.contrib.auth.models import User
-
 
 class BaseModel(models.Model):
     """
@@ -36,7 +34,7 @@ class Company(BaseModel):
     description = models.TextField()
     image = models.URLField(default='https://via.placeholder.com/150', blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True)
-    location = models.OneToOneField('Location', on_delete=models.CASCADE)
+    location = models.ForeignKey('Location', on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -51,12 +49,26 @@ class Category(BaseModel):
         return self.name
 
 
+class Subcategory(BaseModel):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class Location(BaseModel):
+    address_1 = models.CharField(max_length=255)
+    address_2 = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    zip_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
     latitude = models.FloatField()
     longitude = models.FloatField()
 
     def __str__(self):
-        return f"Latitude: {self.latitude}, Longitude: {self.longitude}"
+        return f"{self.address_1}, {self.city}, {self.state}, {self.country}"
 
 
 class Service(BaseModel):
@@ -73,9 +85,11 @@ class Service(BaseModel):
 
 
 class ServiceDetail(BaseModel):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    price = models.FloatField()
+    name = models.CharField(max_length=100, null=False)
+    description = models.TextField(blank=True)
+    price = models.IntegerField(null=True, blank=True)
+    duration_min = models.IntegerField(null=True, blank=True)
+    duration_max = models.IntegerField(null=True, blank=True)
     provider = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='options')
     image = models.URLField(default='https://via.placeholder.com/150', blank=True, null=True)
 
@@ -84,14 +98,24 @@ class ServiceDetail(BaseModel):
 
 
 class Detail(BaseModel):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
-    meta = models.TextField()
-    price = models.FloatField()
+    title = models.CharField(max_length=100, null=False)
+    description = models.TextField(blank=True)
+    meta = models.TextField(blank=True)
+    price = models.FloatField(null=True, blank=True)
     service = models.ForeignKey(ServiceDetail, on_delete=models.CASCADE, related_name='user_inputs')
 
     def __str__(self):
         return self.title
+
+
+class Review(BaseModel):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.TextField()
+
+    def __str__(self):
+        return f"Review by {self.user.username} for {self.service.name}"
 
 
 class Order(BaseModel):
@@ -104,7 +128,7 @@ class Order(BaseModel):
 
 
 class Schedule(BaseModel):
-    vendor_id = models.UUIDField()
+    vendor = models.ForeignKey(User, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     time = models.DateTimeField()
 
@@ -112,21 +136,13 @@ class Schedule(BaseModel):
         return f"Schedule #{self.id}"
 
 
-# class CompanyReview(BaseModel):
-#     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-#     reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
-#     rating = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
-#     comment = models.TextField()
-#
-#     def __str__(self):
-#         return f"Review for {self.company.name} by {self.reviewer.username}"
-#
-#
-# class UserReview(BaseModel):
-#     reviewed_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviewed_user')
-#     reviewer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviewer')
-#     rating = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
-#     comment = models.TextField()
-#
-#     def __str__(self):
-#         return f"Review for {self.reviewed_user.username} by {self.reviewer.username}"
+class Address(BaseModel):
+    address_1 = models.CharField(max_length=255)
+    address_2 = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    zip_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.address_1}, {self.city}, {self.state}, {self.country}"

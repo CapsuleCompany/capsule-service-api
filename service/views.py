@@ -30,10 +30,8 @@ class ProviderViewset(viewsets.GenericViewSet):
 
     @action(detail=True, methods=['get'])
     def get_service_details(self, request, pk=None, service_id=None):
-        company = get_object_or_404(self.queryset, pk=pk)
-        service = get_object_or_404(company.offered_services.all(), pk=service_id)
-        service_details = service.options.all()
-        serializer = ServiceDetailSerializer(service_details, many=True)
+        query = Service.objects.get(pk=service_id)
+        serializer = ServiceSerializer(query, many=False)
         return Response(serializer.data)
 
     @action(detail=True, methods=['get'])
