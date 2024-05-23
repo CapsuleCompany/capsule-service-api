@@ -2,15 +2,17 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.views.generic.detail import DetailView
 from django.shortcuts import get_object_or_404
-from service.serializer import UserSerializer, ProviderSerializer, LocationSerializer, ServiceSerializer, ServiceDetailSerializer, OrderSerializer, ScheduleSerializer, DetailSerializer, CategorySerializer
-from service.models import User, Company, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
+from service.serializer import (UserSerializer, BusinessSerializer, LocationSerializer, ServiceSerializer,
+                                ServiceDetailSerializer, ServiceReviewSerializer,
+                                OrderSerializer, ScheduleSerializer, DetailSerializer,
+                                CategorySerializer, ReviewSerializer)
+from service.models import Profile, Business, Location, Service, ServiceDetail, Order, Schedule, Detail, Category, Review
 from rest_framework.decorators import action
 
 
-
-class ProviderViewset(viewsets.GenericViewSet):
-    queryset = Company.objects.all()
-    serializer_class = ProviderSerializer
+class BusinessViewSet(viewsets.GenericViewSet):
+    queryset = Business.objects.all()
+    serializer_class = BusinessSerializer
 
     def list(self, request):
         serializer = self.serializer_class(self.queryset, many=True)
@@ -23,6 +25,8 @@ class ProviderViewset(viewsets.GenericViewSet):
 
     @action(detail=True, methods=['get'])
     def get_services(self, request, pk=None):
+        """Lists the services offered by a business"""
+
         company = get_object_or_404(self.queryset, pk=pk)
         services = company.offered_services.all()
         serializer = ServiceSerializer(services, many=True)
@@ -30,18 +34,36 @@ class ProviderViewset(viewsets.GenericViewSet):
 
     @action(detail=True, methods=['get'])
     def get_service_details(self, request, pk=None, service_id=None):
+        """Gets details on the service offered"""
+
         query = Service.objects.get(pk=service_id)
         serializer = ServiceSerializer(query, many=False)
         return Response(serializer.data)
 
     @action(detail=True, methods=['get'])
     def get_details(self, request, pk=None, service_id=None, details_id=None):
+        """Gets the options for service"""
         details = ServiceDetail.objects.get(pk=details_id)
         serializer = ServiceDetailSerializer(details, many=False)
         return Response(serializer.data)
 
+    @action(detail=True, methods=['get'])
+    def get_reviews(self, request, pk=None):
+        """Get all the reviews for a customer ordered by service"""
 
+        company = get_object_or_404(Business, pk=pk)
+        services = company.offered_services.all()
+        serializer = ServiceReviewSerializer(services, many=True)
+        return Response(serializer.data)
 
+    @action(detail=True, methods=['get'])
+    def get_contact(self, request, pk=None):
+        """Get contact info for a customer"""
+
+        company = get_object_or_404(Business, pk=pk)
+        owner = company.owner
+        serializer = UserSerializer(owner, many=False)
+        return Response(serializer.data)
 
 
 class ServiceViewSet(viewsets.GenericViewSet):
@@ -83,7 +105,7 @@ class ServiceViewSet(viewsets.GenericViewSet):
     def get_provider(self, request, pk=None):
         queryset = self.queryset
         provider = get_object_or_404(queryset, pk=pk)
-        serializer = ProviderSerializer(provider.company)
+        serializer = BusinessSerializer(provider.company)
         return Response(serializer.data)
 
     @action(detail=True, methods=['get'])

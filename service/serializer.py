@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from service.models import User, Company, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
+from service.models import Profile, Business, Location, Service, ServiceDetail, Order, Schedule, Detail, Category, Review
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = '__all__'
+        model = Profile
+        exclude = ['created_at', 'updated_at', 'phone', 'email']
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -25,7 +25,7 @@ class ServiceDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceDetail
-        fields = ['id', 'name', 'description', 'price', 'image', 'provider', 'user_inputs']
+        fields = ['id', 'name', 'description', 'price', 'image', 'service', 'user_inputs']
 
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -55,8 +55,24 @@ class CategorySerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class ProviderSerializer(serializers.ModelSerializer):
+class BusinessSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Company
+        model = Business
         exclude = ['created_at', 'updated_at']
         depth = 2
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    user = UserSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Review
+        exclude = ['service', 'created_at']
+        depth = 2
+
+class ServiceReviewSerializer(serializers.ModelSerializer):
+    reviews = ReviewSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Service
+        fields = ['id', 'name', 'reviews']

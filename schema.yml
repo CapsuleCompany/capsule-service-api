@@ -1,0 +1,624 @@
+openapi: 3.0.3
+info:
+  title: Your Project API
+  version: 1.0.0
+  description: Your project description
+paths:
+  /provider/{id}/contact:
+    get:
+      operationId: provider_contact_retrieve
+      description: Get contact info for a customer
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /provider/{id}/reviews:
+    get:
+      operationId: provider_reviews_retrieve
+      description: Get all the reviews for a customer ordered by service
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /provider/{id}/services:
+    get:
+      operationId: provider_services_retrieve
+      description: Lists the services offered by a business
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /provider/{id}/services/{service_id}:
+    get:
+      operationId: provider_services_retrieve_2
+      description: Gets details on the service offered
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: service_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /provider/{id}/services/{service_id}/details/{details_id}:
+    get:
+      operationId: provider_services_details_retrieve
+      description: Gets the options for service
+      parameters:
+      - in: path
+        name: details_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: service_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - provider
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /providers/:
+    get:
+      operationId: providers_list
+      tags:
+      - providers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Business'
+          description: ''
+  /providers/{id}/:
+    get:
+      operationId: providers_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this business.
+        required: true
+      tags:
+      - providers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /providers/{id}/get_contact/:
+    get:
+      operationId: providers_get_contact_retrieve
+      description: Get contact info for a customer
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this business.
+        required: true
+      tags:
+      - providers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /providers/{id}/get_details/:
+    get:
+      operationId: providers_get_details_retrieve
+      description: Gets the options for service
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this business.
+        required: true
+      tags:
+      - providers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /providers/{id}/get_reviews/:
+    get:
+      operationId: providers_get_reviews_retrieve
+      description: Get all the reviews for a customer ordered by service
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this business.
+        required: true
+      tags:
+      - providers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /providers/{id}/get_service_details/:
+    get:
+      operationId: providers_get_service_details_retrieve
+      description: Gets details on the service offered
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this business.
+        required: true
+      tags:
+      - providers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /providers/{id}/get_services/:
+    get:
+      operationId: providers_get_services_retrieve
+      description: Lists the services offered by a business
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this business.
+        required: true
+      tags:
+      - providers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+          description: ''
+  /services/:
+    get:
+      operationId: services_list
+      description: A simple ViewSet for listing or retrieving services.
+      tags:
+      - services
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+          description: ''
+  /services/{id}/:
+    get:
+      operationId: services_retrieve
+      description: A simple ViewSet for listing or retrieving services.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this service.
+        required: true
+      tags:
+      - services
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+  /services/{id}/get_provider/:
+    get:
+      operationId: services_get_provider_retrieve
+      description: A simple ViewSet for listing or retrieving services.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this service.
+        required: true
+      tags:
+      - services
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+  /services/{id}/get_provider_services/:
+    get:
+      operationId: services_get_provider_services_retrieve
+      description: A simple ViewSet for listing or retrieving services.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this service.
+        required: true
+      tags:
+      - services
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+  /services/{id}/get_service_details/:
+    get:
+      operationId: services_get_service_details_retrieve
+      description: A simple ViewSet for listing or retrieving services.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this service.
+        required: true
+      tags:
+      - services
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+  /services/{id}/get_service_details_list/:
+    get:
+      operationId: services_get_service_details_list_retrieve
+      description: A simple ViewSet for listing or retrieving services.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this service.
+        required: true
+      tags:
+      - services
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+components:
+  schemas:
+    Business:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        image:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        phone:
+          type: string
+          maxLength: 15
+        location:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+      required:
+      - description
+      - id
+      - location
+      - name
+      - owner
+    Detail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        meta:
+          type: string
+        price:
+          type: number
+          format: double
+          nullable: true
+        service:
+          type: string
+          format: uuid
+      required:
+      - id
+      - service
+      - title
+    Nested:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        address:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+      required:
+      - address
+      - created_at
+      - id
+      - latitude
+      - longitude
+      - updated_at
+    Service:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+        image:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        category:
+          type: string
+          format: uuid
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceDetail'
+          readOnly: true
+      required:
+      - category
+      - description
+      - id
+      - name
+      - options
+      - price
+    ServiceDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        price:
+          type: integer
+          nullable: true
+        image:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        service:
+          type: string
+          format: uuid
+        user_inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Detail'
+          readOnly: true
+      required:
+      - id
+      - name
+      - service
+      - user_inputs
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

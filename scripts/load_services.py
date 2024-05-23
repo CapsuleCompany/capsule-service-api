@@ -1,6 +1,6 @@
 import random
 
-from service.models import User, Company, Location, Service, ServiceDetail, Detail, Category
+from service.models import Profile, Business, Location, Service, ServiceDetail, Detail, Category
 from scripts.helper.services import services
 from scripts.helper.locations import locations
 from scripts.helper.users import general, admins, contractors
@@ -8,7 +8,7 @@ from scripts.helper.users import general, admins, contractors
 
 def create_or_get_user(user_data):
     email = user_data['email']
-    user, created = User.objects.get_or_create(email=email, defaults=user_data)
+    user, created = Profile.objects.get_or_create(email=email, defaults=user_data)
     if not created:
         # Update existing user data if necessary
         for key, value in user_data.items():
@@ -40,8 +40,8 @@ def run():
             longitude=location_data['longitude']
         )
 
-        user = User.objects.get(email=random.choice(contractors)['email'])
-        company, _ = Company.objects.get_or_create(
+        user = Profile.objects.get(email=random.choice(contractors)['email'])
+        company, _ = Business.objects.get_or_create(
             name=service['company_name'],
             defaults={
                 'description': service['company_description'],
