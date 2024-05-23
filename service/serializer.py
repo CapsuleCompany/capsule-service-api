@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from service.models import User, Business, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
+from service.models import Business, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
+# class UserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = '__all__'
 
 
 class LocationSerializer(serializers.ModelSerializer):

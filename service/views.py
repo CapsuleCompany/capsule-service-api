@@ -2,8 +2,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.views.generic.detail import DetailView
 from django.shortcuts import get_object_or_404
-from service.serializer import UserSerializer, ProviderSerializer, LocationSerializer, ServiceSerializer, ServiceDetailSerializer, OrderSerializer, ScheduleSerializer, DetailSerializer, CategorySerializer
-from service.models import User, Business, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
+from service.serializer import ProviderSerializer, LocationSerializer, ServiceSerializer, ServiceDetailSerializer, OrderSerializer, ScheduleSerializer, DetailSerializer, CategorySerializer
+from service.models import Business, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
 from rest_framework.decorators import action
 
 
@@ -111,9 +111,9 @@ class CategoryViewSet(viewsets.GenericViewSet):
         pass
 
 
-class ProfileViewset(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+# class ProfileViewset(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
 
 
 #

@@ -6,7 +6,7 @@ from . import views
 router = DefaultRouter()
 router.register(r'services', views.ServiceViewSet)
 router.register(r'business', views.BusinessViewset)
-router.register(r'profile', views.ProfileViewset)
+# router.register(r'profile', views.ProfileViewset)
 
 # Custom URL patterns
 urlpatterns = [
