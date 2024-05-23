@@ -7,8 +7,7 @@ from service.models import User, Business, Location, Service, ServiceDetail, Ord
 from rest_framework.decorators import action
 
 
-
-class ProviderViewset(viewsets.GenericViewSet):
+class BusinessViewset(viewsets.GenericViewSet):
     queryset = Business.objects.all()
     serializer_class = ProviderSerializer
 
@@ -39,9 +38,6 @@ class ProviderViewset(viewsets.GenericViewSet):
         details = ServiceDetail.objects.get(pk=details_id)
         serializer = ServiceDetailSerializer(details, many=False)
         return Response(serializer.data)
-
-
-
 
 
 class ServiceViewSet(viewsets.GenericViewSet):
@@ -115,13 +111,11 @@ class CategoryViewSet(viewsets.GenericViewSet):
         pass
 
 
+class ProfileViewset(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
-
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#
 #
 # class BusinessViewSet(viewsets.ModelViewSet):
 #     queryset = Business.objects.all()
