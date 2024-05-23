@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from service.models import User, Company, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
+from service.models import User, Business, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -57,6 +57,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ProviderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Company
+        model = Business
         exclude = ['created_at', 'updated_at']
         depth = 2
