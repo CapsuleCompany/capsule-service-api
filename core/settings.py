@@ -74,7 +74,6 @@ SPECTACULAR_SETTINGS = {
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -105,8 +104,16 @@ TEMPLATES = [
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+
+ACCOUNT_ADAPTER = 'user.adapters.CustomAccountAdapter'
+ACCOUNT_FORMS = {
+    'login': 'user.forms.CustomLoginForm',
+}
 
 # Email backend for development
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -119,13 +126,10 @@ DEFAULT_FROM_EMAIL = 'your-email@example.com'
 
 # Allauth settings
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'  # We keep this to a valid option
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
 # Social account providers configuration
-SOCIALACCOUNT_PROVIDERS = {
+SOCIAL_ACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
             'profile',
@@ -177,8 +181,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
