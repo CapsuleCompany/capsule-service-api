@@ -4,16 +4,17 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 from . import views
 
 router = DefaultRouter()
-router.register(r'services', views.ServiceViewSet)
+router.register(r'service', views.ServiceViewSet)
 router.register(r'business', views.BusinessViewset)
+router.register(r'category', views.CategoryViewSet)
 # router.register(r'profile', views.ProfileViewset)
 
 # Custom URL patterns
 urlpatterns = [
     path('', include(router.urls)),  # Include default router URLs
-    # path('providers/<uuid:pk>/services', views.ProviderViewset.as_view({'get': 'get_services'}), name='get_services'),
-    # path('providers/<uuid:pk>/services/<uuid:service_id>', views.ProviderViewset.as_view({'get': 'get_service_details'}), name='get_services'),
-    # path('providers/<uuid:pk>/services/<uuid:service_id>/details/<uuid:details_id>', views.ProviderViewset.as_view({'get': 'get_details'}), name='get_services'),
+    path('business/<uuid:pk>/services', views.BusinessViewset.as_view({'get': 'get_services'}), name='get_services'),
+    # path('providers/<uuid:pk>/services/<uuid:service_id>', views.BusinessViewset.as_view({'get': 'get_service_details'}), name='get_services'),
+    # path('providers/<uuid:pk>/services/<uuid:service_id>/details/<uuid:details_id>', views.BusinessViewset.as_view({'get': 'get_details'}), name='get_services'),
 
     path('api/schema', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),

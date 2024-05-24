@@ -6,8 +6,8 @@ router = DefaultRouter()
 router.register(r'profiles', ProfileViewset, basename='profile')
 
 urlpatterns = [
-    path('', include(router.urls)),  # Include the router URLs
-    path('', include('dj_rest_auth.urls')),  # for dj-rest-auth
+    path('', include(router.urls)),
+    path('', include('dj_rest_auth.urls')),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('signup/', CustomUserCreateView.as_view(), name='register'),
     path('signup/', include('dj_rest_auth.registration.urls')),

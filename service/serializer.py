@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from service.models import Business, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
+from service.models import Business, Location, Service, ServiceDetail, Order, Schedule, Detail, Category, Subcategory
 
 
 # class UserSerializer(serializers.ModelSerializer):
@@ -48,11 +48,19 @@ class ScheduleSerializer(serializers.ModelSerializer):
         exclude = ['created_at', 'updated_at']
 
 
+class SubCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subcategory
+        fields = '__all__'
+
+
 class CategorySerializer(serializers.ModelSerializer):
+    subcategory = SubCategorySerializer(many=True, read_only=True)
+
     class Meta:
         model = Category
-        fields = ["id", "name"]
-        depth = 1
+        fields = ["id", "name", 'subcategory']
+        depth = 2
 
 
 class ProviderSerializer(serializers.ModelSerializer):

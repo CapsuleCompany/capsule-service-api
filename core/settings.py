@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     'service',
     'user',
+    'payment',
 ]
 
 # REST Framework configuration
@@ -218,3 +219,6 @@ AUTH_USER_MODEL = 'user.CustomUser'
 
 # Custom account adapter
 ACCOUNT_ADAPTER = 'user.adapters.CustomAccountAdapter'
+
+STRIPE_SECRET_KEY = 'your-secret-key'
+STRIPE_PUBLISHABLE_KEY = 'your-publishable-key'

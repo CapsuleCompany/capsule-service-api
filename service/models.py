@@ -108,7 +108,7 @@ class Category(BaseModel):
 
 
 class Subcategory(BaseModel):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="subcategory")
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -150,7 +150,7 @@ class ServiceDetail(BaseModel):
     price = models.FloatField(null=True, blank=True)
     duration_min = models.IntegerField(null=True, blank=True)
     duration_max = models.IntegerField(null=True, blank=True)
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='details')
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='options')
     image = models.URLField(default='https://via.placeholder.com/150', blank=True, null=True)
 
     def __str__(self):
