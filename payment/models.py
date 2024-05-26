@@ -1,7 +1,7 @@
 from django.db import models
 from schedule.models import Appointment
 from django.core.validators import MaxValueValidator, MinValueValidator
-from service.models import Service
+from service.models import Service, ServiceDetail
 import uuid
 
 
@@ -15,25 +15,20 @@ class BaseModel(models.Model):
 
 
 class Customer(BaseModel):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=100, null=True)
+    last_name = models.CharField(max_length=100, null=True, blank=True)
+    email = models.EmailField()
     phone = models.CharField(max_length=15, blank=True)
     address = models.ForeignKey(
-        "service.Address", on_delete=models.CASCADE, related_name="customers"
+        "service.Address",
+        on_delete=models.CASCADE,
+        related_name="customers",
+        null=True,
+        blank=True,
     )
 
-
-class OrderType(BaseModel):
-    choices = [
-        ("once", "One Time"),
-        ("weekly", "Bi-Weekly"),
-        ("semi_monthly", "Semi-Monthly"),
-        ("monthly", "Monthly"),
-    ]
-    name = models.CharField(max_length=50, choices=choices)
-
     def __str__(self):
-        return self.name
+        return self.email
 
 
 class Order(BaseModel):
@@ -42,6 +37,12 @@ class Order(BaseModel):
         ("completed", "Completed"),
         ("cancelled", "Cancelled"),
         ("in_progress", "In Progress"),
+    ]
+    order_type_of = [
+        ("once", "Once"),
+        ("weekly", "Bi-Weekly"),
+        ("semi_monthly", "Semi-Monthly"),
+        ("monthly", "Monthly"),
     ]
     created_at = models.DateTimeField(auto_now_add=True)
     is_subscription = models.BooleanField(default=False)
@@ -60,25 +61,24 @@ class Order(BaseModel):
     service_details = models.ManyToManyField(
         "service.ServiceDetail",
         related_name="orders",
+        blank=True,
     )
     customer = models.ForeignKey(
         Customer, on_delete=models.CASCADE, related_name="orders", blank=True, null=True
     )
-    order_type = models.ForeignKey(
-        OrderType,
-        on_delete=models.CASCADE,
-        related_name="orders",
-        blank=True,
-        null=True,
+    order_type = models.CharField(
+        max_length=50, choices=order_type_of, default="once", blank=True
     )
 
     def save(self, *args, **kwargs):
+        if self.service:
+            self.service_details.set(ServiceDetail.objects.filter(service=self.service))
         if not self.order_number:
             self.order_number = str(uuid.uuid4()).replace("-", "").upper()[:12]
         super(Order, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.description
+        return self.order_number
 
 
 class Payment(BaseModel):

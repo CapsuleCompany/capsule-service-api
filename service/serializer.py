@@ -33,7 +33,7 @@ class ServiceDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceDetail
-        fields = ["id", "name", "description", "price", "image", "user_inputs"]
+        fields = ["id", "name", "description", "image", "user_inputs"]
 
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -41,7 +41,7 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Service
-        fields = ["id", "name", "description", "price", "image", "category", "options"]
+        fields = ["id", "name", "description", "image", "category", "options"]
 
 
 class SubCategorySerializer(serializers.ModelSerializer):

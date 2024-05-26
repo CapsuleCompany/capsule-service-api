@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 import uuid
 from django.conf import settings
 from django.db import models
+from core.helper import state_choices, country_choices
 
 
 class BaseModel(models.Model):
@@ -56,10 +57,14 @@ class Address(BaseModel):
     address_1 = models.CharField(max_length=255)
     address_2 = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
+    state = models.CharField(max_length=100, choices=state_choices)
     zip_code = models.CharField(max_length=20)
-    country = models.CharField(max_length=100)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
+    country = models.CharField(
+        max_length=100, default="United States", choices=country_choices
+    )
+    location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, null=True, editable=False
+    )
 
 
 class Subscription(BaseModel):

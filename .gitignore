@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.yml
 
 # Database files
 *.sqlite3
@@ -41,3 +42,6 @@ dist/
 build/
 
 .env
+**/migrations/
+**/migrations/*.py
+**/migrations/*.pyc
