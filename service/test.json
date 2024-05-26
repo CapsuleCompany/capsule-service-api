@@ -1,0 +1,81 @@
+{
+  "users": [
+    {
+      "id": "user123",
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "phone": "+1234567890",
+      "address": "123 Main St, Anytown, USA"
+    }
+  ],
+  "services": [
+    {
+      "id": "service1",
+      "name": "Hair Appointment",
+      "category": "Beauty",
+      "description": "Professional hair cutting and styling services.",
+      "price": 50,
+      "duration": 60,  // in minutes
+      "image_url": "https://example.com/images/hair_appointment.jpg",
+      "service_details": [
+        {
+          "id": "detail1",
+          "name": "Hair Cut",
+          "description": "Basic hair cut service.",
+          "additional_cost": 0
+        },
+        {
+          "id": "detail2",
+          "name": "Hair Color",
+          "description": "Full hair coloring service.",
+          "additional_cost": 30
+        }
+      ]
+    },
+    {
+      "id": "service2",
+      "name": "Lawn Care",
+      "category": "Home Services",
+      "description": "Professional lawn mowing and maintenance.",
+      "price": 100,
+      "duration": 120,  // in minutes
+      "image_url": "https://example.com/images/lawn_care.jpg",
+      "service_details": [
+        {
+          "id": "detail3",
+          "name": "Lawn Mowing",
+          "description": "Regular lawn mowing service.",
+          "additional_cost": 0
+        },
+        {
+          "id": "detail4",
+          "name": "Garden Weeding",
+          "description": "Weeding service for garden areas.",
+          "additional_cost": 20
+        }
+      ]
+    }
+  ],
+  "bookings": [
+    {
+      "id": "booking1",
+      "user_id": "user123",
+      "service_id": "service1",
+      "service_detail_id": "detail2",
+      "booking_time": "2024-05-25T10:00:00Z",
+      "status": "confirmed",
+      "total_cost": 80,
+      "notes": "Please bring your own hair coloring kit."
+    }
+  ],
+  "reviews": [
+    {
+      "id": "review1",
+      "user_id": "user123",
+      "service_id": "service1",
+      "rating": 4.5,
+      "comment": "Great service! Highly recommend.",
+      "review_time": "2024-05-25T15:00:00Z"
+    }
+  ]
+}

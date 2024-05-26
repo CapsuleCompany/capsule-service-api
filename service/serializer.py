@@ -1,5 +1,13 @@
 from rest_framework import serializers
-from service.models import Business, Location, Service, ServiceDetail, Order, Schedule, Detail, Category, Subcategory
+from service.models import (
+    Business,
+    Location,
+    Service,
+    ServiceDetail,
+    Detail,
+    Category,
+    Subcategory,
+)
 
 
 # class UserSerializer(serializers.ModelSerializer):
@@ -11,13 +19,13 @@ from service.models import Business, Location, Service, ServiceDetail, Order, Sc
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        exclude = ['created_at', 'updated_at']
+        exclude = ["created_at", "updated_at"]
 
 
 class DetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detail
-        exclude = ['created_at', 'updated_at']
+        exclude = ["created_at", "updated_at"]
 
 
 class ServiceDetailSerializer(serializers.ModelSerializer):
@@ -25,7 +33,7 @@ class ServiceDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceDetail
-        fields = ['id', 'name', 'description', 'price', 'image', 'user_inputs']
+        fields = ["id", "name", "description", "price", "image", "user_inputs"]
 
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -33,25 +41,13 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Service
-        fields = ['id', 'name', 'description', 'price', 'image', 'category', 'options']
-
-
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        exclude = ['created_at', 'updated_at']
-
-
-class ScheduleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Schedule
-        exclude = ['created_at', 'updated_at']
+        fields = ["id", "name", "description", "price", "image", "category", "options"]
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Subcategory
-        fields = '__all__'
+        fields = "__all__"
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -59,12 +55,12 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ["id", "name", 'subcategory']
+        fields = ["id", "name", "subcategory"]
         depth = 2
 
 
 class ProviderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Business
-        exclude = ['created_at', 'updated_at']
+        exclude = ["created_at", "updated_at"]
         depth = 2

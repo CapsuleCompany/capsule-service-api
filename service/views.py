@@ -2,8 +2,22 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.views.generic.detail import DetailView
 from django.shortcuts import get_object_or_404
-from service.serializer import ProviderSerializer, LocationSerializer, ServiceSerializer, ServiceDetailSerializer, OrderSerializer, ScheduleSerializer, DetailSerializer, CategorySerializer
-from service.models import Business, Location, Service, ServiceDetail, Order, Schedule, Detail, Category
+from service.serializer import (
+    ProviderSerializer,
+    LocationSerializer,
+    ServiceSerializer,
+    ServiceDetailSerializer,
+    DetailSerializer,
+    CategorySerializer,
+)
+from service.models import (
+    Business,
+    Location,
+    Service,
+    ServiceDetail,
+    Detail,
+    Category,
+)
 from rest_framework.decorators import action
 
 
@@ -20,20 +34,20 @@ class BusinessViewset(viewsets.GenericViewSet):
         serializer = self.serializer_class(Business)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def get_services(self, request, pk=None):
         Business = get_object_or_404(self.queryset, pk=pk)
         services = Business.offered_services.all()
         serializer = ServiceSerializer(services, many=True)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def get_service_details(self, request, pk=None, service_id=None):
         query = Service.objects.get(pk=service_id)
         serializer = ServiceSerializer(query, many=False)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def get_details(self, request, pk=None, service_id=None, details_id=None):
         details = ServiceDetail.objects.get(pk=details_id)
         serializer = ServiceDetailSerializer(details, many=False)
@@ -44,6 +58,7 @@ class ServiceViewSet(viewsets.GenericViewSet):
     """
     A simple ViewSet for listing or retrieving services.
     """
+
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
@@ -58,7 +73,7 @@ class ServiceViewSet(viewsets.GenericViewSet):
         serializer = self.serializer_class(service)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def get_service_details(self, request, pk=None):
         queryset = self.queryset
         service = get_object_or_404(queryset, pk=pk)
@@ -66,7 +81,7 @@ class ServiceViewSet(viewsets.GenericViewSet):
         serializer = ServiceDetailSerializer(all_provider_services, many=True)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def get_service_details_list(self, request, pk=None, detail_id=None):
         queryset = self.queryset
         service = get_object_or_404(queryset, pk=pk)
@@ -75,14 +90,14 @@ class ServiceViewSet(viewsets.GenericViewSet):
         serializer = ServiceDetailSerializer(service_detail, many=True)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def get_provider(self, request, pk=None):
         queryset = self.queryset
         provider = get_object_or_404(queryset, pk=pk)
         serializer = ProviderSerializer(provider.Business)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def get_provider_services(self, request, pk=None):
         queryset = self.queryset
         provider = get_object_or_404(queryset, pk=pk)
@@ -106,7 +121,7 @@ class CategoryViewSet(viewsets.GenericViewSet):
         serializer = self.serializer_class(service)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def get_services_by_category(self, request, pk=None):
         pass
 
